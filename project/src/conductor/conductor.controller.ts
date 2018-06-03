@@ -1,7 +1,8 @@
-import {Body, Controller, Get, Param, Post, Put, ValidationPipe} from "@nestjs/common";
+import {Body, Controller, Get, Param, Post, Put} from "@nestjs/common";
 import {Conductor, ConductorService} from "./conductor.service";
 import {Conductor_Editar_Schema, Conductor_Guardar_Schema} from "./conductor.schema";
 import {Indice_Schema} from "../auto/auto.schema";
+import {ValidaPipe} from "../pipes/valida.pipe";
 
 
 @Controller('Conductor')
@@ -14,7 +15,7 @@ export class ConductorController {
     }
 
     @Post()
-    crearConductor(@Body(new ValidationPipe(Conductor_Guardar_Schema))bodyParams){
+    crearConductor(@Body(new ValidaPipe(Conductor_Guardar_Schema))bodyParams){
         const conductor= new Conductor(bodyParams.nombres,
             bodyParams.apellidos,
             bodyParams.fechaNacimiento,
@@ -24,13 +25,13 @@ export class ConductorController {
     }
 
     @Get('/:indice')
-    obtenerUno(@Param(new ValidationPipe(Indice_Schema))Params){
+    obtenerUno(@Param(new ValidaPipe(Indice_Schema))Params){
         return this._conductorService.obtenerConductor(Params.indice);
     }
 
     @Put('/:indice')
-    editarUno(@Param(new ValidationPipe(Indice_Schema))Params,
-              @Body(new ValidationPipe(Conductor_Editar_Schema))bodyParams){
+    editarUno(@Param(new ValidaPipe(Indice_Schema))Params,
+              @Body(new ValidaPipe(Conductor_Editar_Schema))bodyParams){
         const conductor=this._conductorService.obtenerConductor(Params.indice);
         if(bodyParams.nombres){
             conductor.nombres=bodyParams.nombres;

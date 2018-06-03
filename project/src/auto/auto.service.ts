@@ -18,13 +18,13 @@ export class AutoService{
 
 
     editarAuto(indice:number,auto:Auto){
-        try{
+        if(this.arregloAutos[indice]!=undefined){
             this.arregloAutos[indice]=auto;
             return this.arregloAutos[indice];
-        }catch (error) {
+        }else{
             throw new NoEncontradoException(
                 "Auto no encontrado",
-                error,
+                "nop",
                 4
             );
         }

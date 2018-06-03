@@ -1,6 +1,7 @@
-import {Body, Controller, Get, Param, Post, Put, ValidationPipe} from "@nestjs/common";
+import {Body, Controller, Get, Param, Post, Put, Res} from "@nestjs/common";
 import {Auto, AutoService} from "./auto.service";
 import {Auto_Editar_Schema, Auto_Guardar_Schema, Indice_Schema} from "./auto.schema";
+import {ValidaPipe} from "../pipes/valida.pipe";
 
 
 @Controller('Auto')
@@ -13,7 +14,7 @@ export class AutoController {
     }
 
     @Post()
-    crearAuto(@Body(new ValidationPipe(Auto_Guardar_Schema))bodyParams){
+    crearAuto(@Body(new ValidaPipe(Auto_Guardar_Schema))bodyParams){
         const auto= new Auto(bodyParams.chasis,
             bodyParams.nombreMarca,
             bodyParams.colorUno,
@@ -25,13 +26,13 @@ export class AutoController {
     }
 
     @Get('/:indice')
-    obtenerUno(@Param(new ValidationPipe(Indice_Schema))Params){
+    obtenerUno(@Param(new ValidaPipe(Indice_Schema))Params){
         return this._autoService.obtenerAuto(Params.indice);
     }
 
     @Put('/:indice')
-    editarUno(@Param(new ValidationPipe(Indice_Schema))Params,
-              @Body(new ValidationPipe(Auto_Editar_Schema))bodyParams){
+    editarUno(@Param(new ValidaPipe(Indice_Schema))Params,
+              @Body(new ValidaPipe(Auto_Editar_Schema))bodyParams){
         const auto=this._autoService.obtenerAuto(Params.indice);
         if(bodyParams.chasis){
             auto.chasis=bodyParams.chasis;
