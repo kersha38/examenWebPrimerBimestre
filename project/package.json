@@ -6,6 +6,8 @@
   "license": "MIT",
   "scripts": {
     "format": "prettier --write \"**/*.ts\"",
+
+    "start": "node dist/server",
     "start:dev": "nodemon",
     "prestart:prod": "rm -rf dist && tsc",
     "start:prod": "node dist/main.js",
@@ -13,8 +15,9 @@
     "test": "jest",
     "test:cov": "jest --coverage",
     "test:e2e": "jest --config ./test/jest-e2e.json",
-    "start": "node dist/server",
     "webpack": "webpack --config webpack.config.js"
+
+
   },
   "dependencies": {
     "@nestjs/common": "^5.0.0",
