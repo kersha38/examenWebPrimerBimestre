@@ -29,19 +29,10 @@ export class ConductorService {
     }
 
     editarConductor(indice:number,conductor:Conductor){
-        try{
-            this.arregloConductores[indice]=conductor;
-            return this.arregloConductores[indice];
-        }catch (error) {
-            throw new NoEncontradoException(
-                "Conductor no encontrado",
-                error,
-                4
-            )
-        }
+        this.arregloConductores[indice]=conductor;
+        return this.arregloConductores[indice];
     }
 }
-
 
 export class Conductor {
     constructor(public nombres:string,
@@ -49,5 +40,4 @@ export class Conductor {
                 public fechaNacimiento: Date,
                 public numeroMedallas:number,
                 public campeonActual:boolean){}
-
 }

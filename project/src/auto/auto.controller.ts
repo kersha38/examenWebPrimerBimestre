@@ -2,6 +2,8 @@ import {Body, Controller, Get, Param, Post, Put, Res} from "@nestjs/common";
 import {Auto, AutoService} from "./auto.service";
 import {Auto_Editar_Schema, Auto_Guardar_Schema, Indice_Schema} from "./auto.schema";
 import {ValidaPipe} from "../pipes/valida.pipe";
+import {NoEncontradoException} from "../exceptions/no-encontrado.exception";
+import {tryCatch} from "rxjs/internal/util/tryCatch";
 
 
 @Controller('Auto')
@@ -27,13 +29,34 @@ export class AutoController {
 
     @Get('/:indice')
     obtenerUno(@Param(new ValidaPipe(Indice_Schema))Params){
-        return this._autoService.obtenerAuto(Params.indice);
+
+        if(this._autoService.obtenerAuto(Params.indice)){
+            return this._autoService.obtenerAuto(Params.indice);
+        }else{
+            throw new NoEncontradoException(
+                "Auto no encontrado",
+                "",
+                4
+            );
+        }
+
     }
 
     @Put('/:indice')
     editarUno(@Param(new ValidaPipe(Indice_Schema))Params,
               @Body(new ValidaPipe(Auto_Editar_Schema))bodyParams){
-        const auto=this._autoService.obtenerAuto(Params.indice);
+        let  auto:Auto;
+
+        if(this._autoService.obtenerAuto(Params.indice)){
+            auto=this._autoService.obtenerAuto(Params.indice);
+        }else{
+            throw new NoEncontradoException(
+                "Auto no encontrado",
+                "",
+                4
+            );
+        }
+
         if(bodyParams.chasis){
             auto.chasis=bodyParams.chasis;
         }
@@ -56,7 +79,6 @@ export class AutoController {
             auto.idConductor=bodyParams.idConductor;
         }
 
-        return this._autoService.editarAuto(Params.indice,auto);
+        return  this._autoService.editarAuto(Params.indice, auto);
     }
-
 }

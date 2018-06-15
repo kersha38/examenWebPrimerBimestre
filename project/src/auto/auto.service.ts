@@ -1,6 +1,5 @@
 import {Injectable} from '@nestjs/common'
 import {ConductorService} from "../conductor/conductor.service";
-import {NoEncontradoException} from "../exceptions/no-encontrado.exception";
 
 @Injectable()
 export class AutoService{
@@ -18,28 +17,12 @@ export class AutoService{
 
 
     editarAuto(indice:number,auto:Auto){
-        if(this.arregloAutos[indice]!=undefined){
-            this.arregloAutos[indice]=auto;
-            return this.arregloAutos[indice];
-        }else{
-            throw new NoEncontradoException(
-                "Auto no encontrado",
-                "nop",
-                4
-            );
-        }
+        this.arregloAutos[indice]=auto;
+        return this.arregloAutos[indice];
     }
 
     obtenerAuto(indice: number) {
-        try{
-            return this.arregloAutos[indice];    
-        }catch (error) {
-            throw new NoEncontradoException(
-                "Auto no encontrado",
-                error,
-                4
-            );
-        }
+        return this.arregloAutos[indice];
     }
 }
 
